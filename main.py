@@ -79,6 +79,9 @@ try:
     mirror_route_path = follow_path(path=("mirror", "route", "path"), data=config)
     mirror_route_header = follow_path(path=("mirror", "route", "header"), data=config)
 
+    ping_route_path = follow_path(path=("ping", "route", "path"), data=config)
+    ping_route_status = follow_path(path=("ping", "route", "status"), data=config)
+
     privacy_xff_enabled = follow_path(path=("privacy", "xff", "enabled"), data=config)
     privacy_xff_value = follow_path(path=("privacy", "xff", "value"), data=config)
 
@@ -220,6 +223,15 @@ async def nonstream_mirror(request: Request, path: str) -> HTTPResponse:
             },
             status=500,
         )
+
+
+@server.route(
+    uri="/" + ping_route_path.strip("/") + "/",
+    strict_slashes=False,
+    name="ping",
+)
+async def ping(request: Request) -> HTTPResponse:
+    return response.json(body={"alive": True}, status=ping_route_status)
 
 
 if __name__ == "__main__":
