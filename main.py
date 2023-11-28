@@ -87,8 +87,8 @@ try:
     ping_route_path = follow_path(path=["ping", "route", "path"], data=config)
     ping_route_status = follow_path(path=["ping", "route", "status"], data=config)
 
-    privacy_xff_enabled = follow_path(path=("privacy", "xff", "enabled"], data=config)
-    privacy_xff_value = follow_path(path=("privacy", "xff", "value"], data=config)
+    privacy_xff_enabled = follow_path(path=["privacy", "xff", "enabled"], data=config)
+    privacy_xff_value = follow_path(path=["privacy", "xff", "value"], data=config)
 
     privacy_proxies_enabled = follow_path(
         path=["privacy", "proxies", "enabled"], data=config
@@ -148,7 +148,7 @@ async def nonstream_mirror(request: Request, path: str) -> HTTPResponse:
         request_kw = {}
 
         requested_url = (
-            f"{request.headers.get(headers_protocol_name, headers_protocol_default)}://{request.headers.get(mirror_route_header).rstrip('/')}/{path.lstrip('/')}"
+            f"{request.headers.get(headers_protocol_name, headers_protocol_default)}://{request.headers[mirror_route_header].rstrip('/')}/{path.lstrip('/')}"
         )
         requested_params = dict(request.get_args().items())
         requested_headers = {
