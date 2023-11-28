@@ -2,7 +2,7 @@
 
 <div align="center">
   <a href="https://github.com/infernox-dev/sanic-http-mirror">
-    <img src="logo.png" alt="HTTP Mirror" width="80" height="80">
+    <img src="logo.png" alt="HTTP Mirror" width="135" height="135">
   </a>
 
   <h3 align="center">HTTP Mirror</h3>
