@@ -63,6 +63,7 @@ def follow_path(path: list[str], data: dict[str, Any]) -> Any:
         f"cannot follow path '{'.'.join(path)}' because it is not dictionary"
     )
 
+
 config = loads(string=fast_read(filename="/config.conf"))
 server = Sanic(name="http_mirror", ctx=config)
 server.config.proxy_index = 0
@@ -136,7 +137,7 @@ async def nonstream_mirror(request: Request, path: str) -> HTTPResponse:
                         "error": {
                             "side": "mirror",
                             "message": (
-                               f"This mirror requires authorization. "
+                                f"This mirror requires authorization. "
                                 "Please provide a password in the '{auth_header}' header"
                             ),
                         },
@@ -147,9 +148,7 @@ async def nonstream_mirror(request: Request, path: str) -> HTTPResponse:
         session_kw = {}
         request_kw = {}
 
-        requested_url = (
-            f"{request.headers.get(headers_protocol_name, headers_protocol_default)}://{request.headers[mirror_route_header].rstrip('/')}/{path.lstrip('/')}"
-        )
+        requested_url = f"{request.headers.get(headers_protocol_name, headers_protocol_default)}://{request.headers[mirror_route_header].rstrip('/')}/{path.lstrip('/')}"
         requested_params = dict(request.get_args().items())
         requested_headers = {
             k: v
@@ -227,11 +226,11 @@ async def nonstream_mirror(request: Request, path: str) -> HTTPResponse:
 
 
 @server.route(
-    uri="/" + ping_route_path.strip("/") + "/",
+    uri=f"/{ping_route_path.strip('/')}/",
     strict_slashes=False,
     name="ping",
 )
-async def ping(request: Request) -> HTTPResponse:
+async def ping(unused: Request) -> HTTPResponse:
     return response.json(body={"alive": True}, status=ping_route_status)
 
 
