@@ -137,8 +137,8 @@ async def nonstream_mirror(request: Request, path: str) -> HTTPResponse:
                         "error": {
                             "side": "mirror",
                             "message": (
-                                f"This mirror requires authorization. "
-                                "Please provide a password in the '{auth_header}' header"
+                                "This mirror requires authorization. "
+                                f"Please provide a password in the '{auth_header}' header"
                             ),
                         },
                     },
