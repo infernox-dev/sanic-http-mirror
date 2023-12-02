@@ -44,21 +44,27 @@ class ValidationException(Exception):
 
 
 def follow_path(path: list[str], data: dict[str, Any]) -> Any:
-    cursor = data
+    current = data
+
     for key in path[:-1]:
         try:
-            ob = cursor[key]
-            if not isinstance(ob, dict):
+            selected = current[key]
+
+            if not isinstance(selected, dict):
                 raise TypeError(
                     f"cannot follow path '{'.'.join(path)}' because it is not dictionary"
                 )
-            cursor = ob
+
+            current = selected
+
         except KeyError:
             raise NoPathException(
                 f"cannot follow path '{'.'.join(path)}' because it is not exists"
             )
-    if isinstance(cursor, dict):
-        return cursor[path[-1]]
+
+    if isinstance(current, dict):
+        return current[path[-1]]
+
     raise TypeError(
         f"cannot follow path '{'.'.join(path)}' because it is not dictionary"
     )
