@@ -3,6 +3,7 @@ from sanic import Sanic
 from sanic import Request
 from sanic import HTTPResponse
 from sanic import response
+from sanic import HTTPMethod
 from os.path import split
 from aiohttp import ClientSession
 from aiohttp_socks import ProxyConnector
@@ -120,6 +121,7 @@ except NoPathException as exc:
     uri=f"/{mirror_route_path.strip('/')}/<path:path>",
     strict_slashes=False,
     name="mirror.nonstream",
+    methods = list(map(str, HTTPMethod))
 )
 async def nonstream_mirror(request: Request, path: str) -> HTTPResponse:
     try:
@@ -154,7 +156,13 @@ async def nonstream_mirror(request: Request, path: str) -> HTTPResponse:
         session_kw = {}
         request_kw = {}
 
-        requested_url = f"{request.headers.get(headers_protocol_name, headers_protocol_default)}://{request.headers[mirror_route_header].rstrip('/')}/{path.lstrip('/')}"
+        requested_url = "{protocol}://{hostname}/{path}".format(
+            protocol=request.headers.get(
+                headers_protocol_name, headers_protocol_default
+            ),
+            hostname=request.headers[mirror_route_header].rstrip("/"),
+            path=path.lstrip("/"),
+        )
         requested_params = dict(request.get_args().items())
         requested_headers = {
             k: v
